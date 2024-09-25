@@ -1,23 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
 
 function App() {
+  const [fallReported, setFallReported] = useState(false);
+
+  const reportFall = async () => {
+    const response = await fetch('http://localhost:3000/report-fall', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        user_id: 'user123',
+        timestamp: new Date().toISOString(),
+      }),
+    });
+    
+    if (response.ok) {
+      setFallReported(true);
+      alert('Fall reported!');
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>SafeStep</h1>
+      <button onClick={reportFall}>Report Fall</button>
+      {fallReported && <p>Fall reported successfully!</p>}
     </div>
   );
 }
