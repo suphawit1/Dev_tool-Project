@@ -1,0 +1,24 @@
+# ใช้ Node.js เป็น base image
+FROM node:14
+
+# ตั้งค่า directory สำหรับการเก็บโปรเจค
+WORKDIR /app
+
+# คัดลอก package.json และติดตั้ง dependencies
+COPY package.json package-lock.json ./
+RUN npm install
+
+# คัดลอกโค้ดทั้งหมดลงใน container
+COPY . .
+
+# สร้าง production build ของแอป
+RUN npm run build
+
+# ติดตั้ง serve เพื่อลง production build
+RUN npm install -g serve
+
+# ระบุพอร์ตที่จะ expose
+EXPOSE 3000
+
+# รันแอปโดยใช้ serve
+CMD ["serve", "-s", "build", "-l", "3000"]
