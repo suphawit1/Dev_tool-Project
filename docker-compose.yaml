@@ -20,7 +20,7 @@ services:
     container_name: django_web
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - ./django:/app  # เมานท์โค้ดของ Django เข้าไปใน container
+      - ./django:/Dev_tool-Project # เมานท์โค้ดของ Django เข้าไปใน container
     ports:
       - "8000:8000"  # เปิดพอร์ตสำหรับการเข้าถึง Django
     depends_on:
