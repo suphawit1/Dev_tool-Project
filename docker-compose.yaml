@@ -7,7 +7,7 @@ services:
     restart: always
     environment:
       MYSQL_DATABASE: dbreportfall  # ชื่อฐานข้อมูล
-      MYSQL_ROOT_PASSWORD: 1234  # รหัสผ่านของ root
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
     ports:
       - "3306:3306"  # เปิดพอร์ตสำหรับเชื่อมต่อจากภายนอก
     volumes:
@@ -24,10 +24,10 @@ services:
     depends_on:
       - db  # รอให้ db service เริ่มทำงานก่อน
     environment:
-      - DB_HOST=db  # ชื่อ service ของ MySQL ใน docker-compose เป็น host ของฐานข้อมูล
-      - DB_NAME=dbreportfall
-      - DB_USER=root
-      - DB_PASSWORD=1234
+      - DB_HOST: db  # ชื่อ service ของ MySQL ใน docker-compose เป็น host ของฐานข้อมูล
+      - DB_NAME: dbreportfall
+      - DB_USER: root
+      - DB_PASSWORD: ''
 
 volumes:
   mysql_data:  # กำหนด Docker Volume สำหรับเก็บข้อมูล MySQL
