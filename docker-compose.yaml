@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   db:  # MySQL Database Service
-    image: mysql:5.7  # เลือกใช้ MySQL เวอร์ชัน 5.7
+    image: mysql:8.0  # เลือกใช้ MySQL เวอร์ชัน 5.7
     container_name: mysql_db
     restart: always
     environment:
@@ -24,26 +24,26 @@ services:
     depends_on:
       - db  # รอให้ db service เริ่มทำงานก่อน
     environment:
-      - DB_HOST: db  # ชื่อ service ของ MySQL ใน docker-compose เป็น host ของฐานข้อมูล
-      - DB_NAME: dbreportfall
-      - DB_USER: root
-      - DB_PASSWORD: ''
+      - DB_HOST = db  # ชื่อ service ของ MySQL ใน docker-compose เป็น host ของฐานข้อมูล
+      - DB_NAME = dbreportfall
+      - DB_USER = root
+      - DB_PASSWORD = ''
 
-phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: my_phpmyadmin
-    restart: always
-    environment:
-      PMA_HOST: db  # เชื่อมต่อกับ service 'db' (MySQL)
-      PMA_USER: root
-      PMA_PASSWORD: ''  # รหัสผ่านของผู้ใช้ root ของ MySQL
-      UPLOAD_LIMIT: 64M
-    ports:
-      - "8080:80"  # เปิดพอร์ต 8080 เพื่อเข้าถึง phpMyAdmin ผ่านเบราว์เซอร์
-    depends_on:
-      - db
-    networks:
-      - mynetwork
+  phpmyadmin:
+      image: phpmyadmin/phpmyadmin
+      container_name: my_phpmyadmin
+      restart: always
+      environment:
+        - PMA_HOST = db  # เชื่อมต่อกับ service 'db' (MySQL)
+        - PMA_USER = root
+        - PMA_PASSWORD = ''  # รหัสผ่านของผู้ใช้ root ของ MySQL
+        - UPLOAD_LIMIT = 64M
+      ports:
+        - "8081:80"  # เปิดพอร์ต 8080 เพื่อเข้าถึง phpMyAdmin ผ่านเบราว์เซอร์
+      depends_on:
+        - db
+      networks:
+        - mynetwork
 
 volumes:
   mysql_data:
