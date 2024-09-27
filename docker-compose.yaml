@@ -29,5 +29,24 @@ services:
       - DB_USER: root
       - DB_PASSWORD: ''
 
+phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: my_phpmyadmin
+    restart: always
+    environment:
+      PMA_HOST: db  # เชื่อมต่อกับ service 'db' (MySQL)
+      PMA_USER: root
+      PMA_PASSWORD: ''  # รหัสผ่านของผู้ใช้ root ของ MySQL
+      UPLOAD_LIMIT: 64M
+    ports:
+      - "8080:80"  # เปิดพอร์ต 8080 เพื่อเข้าถึง phpMyAdmin ผ่านเบราว์เซอร์
+    depends_on:
+      - db
+    networks:
+      - mynetwork
+
 volumes:
-  mysql_data:  # กำหนด Docker Volume สำหรับเก็บข้อมูล MySQL
+  mysql_data:
+
+networks:
+  mynetwork:

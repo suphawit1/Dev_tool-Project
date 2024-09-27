@@ -79,7 +79,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'dbreportfall',
         'USER' : 'root',
-        'PASSWORD' : '1234',
+        'PASSWORD' : '',
         'HOST' : '35.247.167.12',
         'PORT' : '3306',
     }
