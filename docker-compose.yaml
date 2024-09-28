@@ -18,4 +18,4 @@ services:
     volumes:
       - ./my-app:/usr/src/app  # Mount React code into the container
     ports:
-      - "3001:3000"  # Open port for React access
+      - "3000:3000"  # Open port for React access
