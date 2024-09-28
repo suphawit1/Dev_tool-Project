@@ -1,0 +1,3 @@
+CREATE USER 'user'@'%' IDENTIFIED BY '1234';
+GRANT ALL PRIVILEGES ON dbreportfall.* TO 'user'@'%';
+FLUSH PRIVILEGES;
