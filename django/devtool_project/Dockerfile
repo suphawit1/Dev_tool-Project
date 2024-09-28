@@ -16,13 +16,14 @@ WORKDIR /Dev_tool-Project
 
 # คัดลอกไฟล์ requirements.txt ไปยัง container และติดตั้ง dependencies
 COPY requirements.txt ./
+
 RUN pip install --no-cache-dir -r requirements.txt
 
 # คัดลอกโค้ดทั้งหมดไปยัง container
 COPY . .
 
 # ตรวจสอบไฟล์ที่ถูกคัดลอก
-RUN ls -al  # เพิ่มบรรทัดนี้เพื่อตรวจสอบไฟล์ภายในคอนเทนเนอร์
+RUN ls -al /Dev_tool-Project
 
 # เปิดพอร์ต 8000
 EXPOSE 8000
