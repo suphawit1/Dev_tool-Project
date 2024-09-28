@@ -75,16 +75,15 @@ WSGI_APPLICATION = 'devtool_project.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'dbreportfall',
-        'USER' : 'root',
-        'PASSWORD' : '',
-        'HOST' : '35.247.167.12',
-        'PORT' : '3306',
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "safestep",
+        "USER":  "postgres",
+        "PASSWORD": "1234",
+        "HOST": "34.172.151.247",
+        "PORT": "5432",
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
