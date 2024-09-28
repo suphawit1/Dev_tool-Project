@@ -4,7 +4,8 @@ function App() {
   const [fallReported, setFallReported] = useState(false);
 
   const reportFall = async () => {
-    const response = await fetch('http://localhost:3000/report-fall', {
+    const ip = "35.187.245.152"
+    const response = await fetch('http://35.187.245.152:3000/report-fall', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
