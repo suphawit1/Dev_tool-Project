@@ -7,7 +7,8 @@ services:
     restart: always
     environment:
       MYSQL_DATABASE: dbreportfall  # ชื่อฐานข้อมูล
-      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_ROOT_PASSWORD: '1234'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'no'
     ports:
       - "3306:3306"  # เปิดพอร์ตสำหรับเชื่อมต่อจากภายนอก
     volumes:
@@ -27,7 +28,7 @@ services:
       - DB_HOST = db  # ชื่อ service ของ MySQL ใน docker-compose เป็น host ของฐานข้อมูล
       - DB_NAME = dbreportfall
       - DB_USER = root
-      - DB_PASSWORD = ''
+      - DB_PASSWORD = '1234'
 
   phpmyadmin:
       image: phpmyadmin/phpmyadmin
@@ -36,7 +37,7 @@ services:
       environment:
         - PMA_HOST = db  # เชื่อมต่อกับ service 'db' (MySQL)
         - PMA_USER = root
-        - PMA_PASSWORD = ''  # รหัสผ่านของผู้ใช้ root ของ MySQL
+        - PMA_PASSWORD = '1234'  # รหัสผ่านของผู้ใช้ root ของ MySQL
         - UPLOAD_LIMIT = 64M
       ports:
         - "8081:80"  # เปิดพอร์ต 8080 เพื่อเข้าถึง phpMyAdmin ผ่านเบราว์เซอร์
