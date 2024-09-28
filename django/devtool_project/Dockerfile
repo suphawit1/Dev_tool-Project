@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # ตั้งค่า working directory
-WORKDIR /Dev_tool-Project
+WORKDIR /app
 
 # คัดลอกไฟล์ requirements.txt ไปยัง container และติดตั้ง dependencies
 COPY requirements.txt ./
