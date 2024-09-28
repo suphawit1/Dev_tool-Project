@@ -2,31 +2,20 @@ version: '3.8'
 
 services:
   web:  # Django Web Service
-    build: ./django  # โฟลเดอร์ที่มี Dockerfile ของ Django
+    build: ./django  # Folder with Dockerfile of Django
     container_name: django_web
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - ./django:/Dev_tool-Project # เมานท์โค้ดของ Django เข้าไปใน container
-      - mysql_data:/var/lib/mysql
-      - ./initdb:/docker-entrypoint-initdb.d  # เพิ่มส่วนนี้เพื่อรันสคริปต์ SQL เมื่อเริ่มทำงาน container
+      - ./django:/Dev_tool-Project  # Mount Django code into the container
     ports:
-      - "8000:8000"  # เปิดพอร์ตสำหรับการเข้าถึง Django
-    depends_on:
-      - db  # รอให้ db service เริ่มทำงานก่อน
+      - "8000:8000"  # Open port for Django access
     environment:
-      - DB_HOST = db  # ชื่อ service ของ MySQL ใน docker-compose เป็น host ของฐานข้อมูล
-      - DB_NAME = dbreportfall
-      - DB_USER = root
-      - DB_PASSWORD = '1234'
+      - DATABASE_URL=postgres://postgres:1234@34.172.151.247:5432/safestep  # Google Cloud PostgreSQL connection
 
-  my-app:
-    build: ./my-app/src
+  my-app:  # React Application
+    build: ./my-app  # Folder with Dockerfile of React
+    container_name: react_app
+    volumes:
+      - ./my-app:/usr/src/app  # Mount React code into the container
     ports:
-      - "3001:3000"
-
-
-volumes:
-  mysql_data:
-
-networks:
-  mynetwork:
+      - "3001:3000"  # Open port for React access
