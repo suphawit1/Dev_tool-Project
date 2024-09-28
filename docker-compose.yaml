@@ -20,6 +20,8 @@ services:
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - ./django:/Dev_tool-Project # เมานท์โค้ดของ Django เข้าไปใน container
+      - mysql_data:/var/lib/mysql
+      - ./initdb:/docker-entrypoint-initdb.d  # เพิ่มส่วนนี้เพื่อรันสคริปต์ SQL เมื่อเริ่มทำงาน container
     ports:
       - "8000:8000"  # เปิดพอร์ตสำหรับการเข้าถึง Django
     depends_on:
@@ -36,7 +38,7 @@ services:
       restart: always
       environment:
         - PMA_HOST = db  # เชื่อมต่อกับ service 'db' (MySQL)
-        - PMA_USER = root
+        - PMA_USER = user
         - PMA_PASSWORD = '1234'  # รหัสผ่านของผู้ใช้ root ของ MySQL
         - UPLOAD_LIMIT = 64M
       ports:
