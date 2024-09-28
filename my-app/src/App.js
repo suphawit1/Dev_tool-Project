@@ -14,6 +14,7 @@ function App() {
         user_id: 'user123',
         timestamp: new Date().toISOString(),
       }),
+      redirect: 'manual' // This prevents automatic redirection
     });
     
     if (response.ok) {
@@ -25,7 +26,7 @@ function App() {
   return (
     <div>
       <h1>SafeStep</h1>
-      <button onClick={reportFall}>Report Fall</button>
+      <button onClick={reportFall}>Rawdaweport Fall</button>
       {fallReported && <p>Fall reported successfully!</p>}
     </div>
   );
