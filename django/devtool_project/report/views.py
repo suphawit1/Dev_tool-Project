@@ -1,3 +1,12 @@
-from django.shortcuts import render
+from django.http import HttpResponse
+from django.views import View
 
-# Create your views here.
+
+class Report(View):
+    def get(self, request):
+        # <view logic>
+        return HttpResponse(status=201)
+    
+    def post(self, request):
+        # <view logic>
+        return HttpResponse(status=201)
