@@ -11,12 +11,15 @@ RUN apt-get update && apt-get install -y \
     libpq-dev \
     && rm -rf /var/lib/apt/lists/*
 
+# ตั้งค่า working directory
+WORKDIR /Dev_tool-Project
+
 # คัดลอกไฟล์ requirements.txt ไปยัง container และติดตั้ง dependencies
-COPY requirements.txt /Dev_tool-Project/
-RUN pip install --no-cache-dir -r /Dev_tool-Project/requirements.txt
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
 
 # คัดลอกโค้ดทั้งหมดไปยัง container
-COPY . /Dev_tool-Project/
+COPY . .
 
 # เปิดพอร์ต 8000
 EXPOSE 8000

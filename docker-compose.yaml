@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   web:  # Django Web Service
-    build: ./django/devtool_project/django/devtool_project  # Folder with Dockerfile of Django
+    build: ./django/devtool_project/  # Folder with Dockerfile of Django
     container_name: django_web
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
