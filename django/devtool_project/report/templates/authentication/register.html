@@ -1,3 +1,4 @@
+{% extends 'base.html' %}
 
 {% block title %}Register{% endblock %}
 
@@ -23,20 +24,15 @@
                 <label for="password" class="form-label">Password(again)</label>
                 <input type="password" class="form-control" id="password2" name="password2" required>
             </div>
-            {{ form.first_name.errors }}
+            {{ form.address.errors }}
             <div class="mb-3">
-                <label for="password" class="form-label">First Name</label>
-                <input type="text" class="form-control" id="first_name" name="first_name" required>
+                <label for="address" class="form-label">Address</label>
+                <input type="text" class="form-control" id="address" name="address" required>
             </div>
-            {{ form.last_name.errors }}
+            {{ form.phone.errors }}
             <div class="mb-3">
-                <label for="password" class="form-label">Last Name</label>
-                <input type="text" class="form-control" id="last_name" name="last_name" required>
-            </div>
-            {{ form.email.errors }}
-            <div class="mb-3">
-                <label for="password" class="form-label">Email</label>
-                <input type="text" class="form-control" id="email" name="email" required>
+                <label for="phone" class="form-label">Phone</label>
+                <input type="text" class="form-control" id="phone" name="phone" required>
             </div>
             <button type="submit" class="btn btn-primary w-100">Register</button>
             <br>

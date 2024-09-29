@@ -58,7 +58,7 @@ class LoginView(View):
 
             if user is not None:
                 login(request,user)
-                return redirect('book')
+                return redirect('index')
             else:
                 messages.error(request,'invalid username')
         else:
@@ -73,13 +73,16 @@ class LogoutView(View):
 class RegisterView(View):
     def post(self, request):
         form = CustomUserCreationForm(request.POST)
+        
         if form.is_valid():
             my_user = form.save()
-            print(my_user)
+            phone = form.cleaned_data.get('phone')
+            address = form.cleaned_data.get('address')
             Customer.objects.create(
                 user = my_user,
-                phone = my_user.phone,
-                address = my_user.address
+                phone = phone,
+                address = address,
+                contact=None
             )
             messages.success(request, 'Account created successfully')
             return redirect('login') 
