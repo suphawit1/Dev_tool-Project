@@ -15,7 +15,7 @@ from django.contrib.contenttypes.models import ContentType
 
 class Report(View):
     def get(self, request):
-        return render('index.html') 
+        return render(request,'index.html') 
         
     def post(self, request):
         # <view logic>
