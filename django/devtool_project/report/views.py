@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 
 class Report(View):
     def get(self, request):
-        return render('index.html') 
+        return render(request,'index.html') 
         
     def post(self, request):
         # <view logic>
