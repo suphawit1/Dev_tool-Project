@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   web:  # Django Web Service
     build: ./django/devtool_project  # Folder with Dockerfile of Django
