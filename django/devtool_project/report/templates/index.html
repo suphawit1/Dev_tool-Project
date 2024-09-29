@@ -38,7 +38,10 @@
 <body>
     <div class="center">
         <h1>Report Fall</h1>
-        <button action="/report/" class="button">Report Fall</button>
+        <form action="/report/" method="POST">
+            {% csrf_token %}
+            <button type="submit" class="button">Report Fall</button>
+        </form>
     </div>
 </body>
 </html>
