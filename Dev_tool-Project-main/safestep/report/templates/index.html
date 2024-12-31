@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
+</head>
+<div class="container mt-5 mb-5">
+    <h1 class="mb-4 text-center">Fall Report</h1>
+    <div class="text-center mb-5">
+        <button class="btn btn-danger btn-lg self-report-btn" data-bs-toggle="modal" data-bs-target="#selfReportModal">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>Self Report Fall
+        </button>
+    </div>
+    <div class="table-responsive">
+        <h1 class="mb-4 text-center">ประวัติการล้ม</h1>
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Time</th>
+                    <th>Alpha</th>
+                    <th>Beta</th>
+                    <th>Gamma</th>
+                    <th>Acc X</th>
+                    <th>Acc Y</th>
+                    <th>Acc Z</th>
+                    <th>Magnitude</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% load tz %}
+                {% timezone "Asia/Bangkok" %}
+                {% for fall in fall_data %}
+                <tr>
+                    <td>{{ fall.timestamp|date:"F d, Y H:i:s" }}</td>
+                    <td>{% if fall.sensor.alpha %}{{ fall.sensor.alpha|floatformat:2 }}{% else %}N/A{% endif %}</td>
+                    <td>{% if fall.sensor.beta %}{{ fall.sensor.beta|floatformat:2 }}{% else %}N/A{% endif %}</td>
+                    <td>{% if fall.sensor.gamma %}{{ fall.sensor.gamma|floatformat:2 }}{% else %}N/A{% endif %}</td>
+                    <td>{% if fall.sensor.accelerationX %}{{ fall.sensor.accelerationX|floatformat:2 }}{% else %}N/A{% endif %}</td>
+                    <td>{% if fall.sensor.accelerationY %}{{ fall.sensor.accelerationY|floatformat:2 }}{% else %}N/A{% endif %}</td>
+                    <td>{% if fall.sensor.accelerationZ %}{{ fall.sensor.accelerationZ|floatformat:2 }}{% else %}N/A{% endif %}</td>
+                    <td>{% if fall.sensor.magnitude %}{{ fall.sensor.magnitude|floatformat:2 }}{% else %}N/A{% endif %}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8" class="text-center">No fall data recorded yet.</td>
+                </tr>
+                {% endfor %}
+                {% endtimezone %}
+            </tbody>
+        </table>
+    </div>
+    
+</div>
+
+<!-- Self Report Modal -->
+<div class="modal fade" id="selfReportModal" tabindex="-1" aria-labelledby="selfReportModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="selfReportModalLabel">Self Report Fall</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'report' %}" method="post">
+                    {% csrf_token %}
+                    <p class="lead">Are you sure you want to report a fall?</p>
+                    <button type="submit" class="btn btn-danger btn-lg w-100">Confirm Fall Report</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+    {% if messages %}
+    {% for message in messages %}
+        <script>
+            alert("{{ message }}");  // Display the message in an alert
+        </script>
+    {% endfor %}
+    {% endif %}
+{% endblock %}

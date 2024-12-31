@@ -1,0 +1,26 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Clear Docker Components') {
+            steps {
+                script {
+                    // Remove Docker images and containers
+                    sh 'docker compose down --rmi all --volumes --remove-orphans || true'
+                    sh 'docker system prune -af'
+                }
+            }
+        }
+        stage('Deploy') {
+            steps {
+                script {
+                    dir('.') {
+                        // Pull and start services using docker-compose
+                        sh 'docker compose pull'
+                        sh 'docker compose up -d'
+                    }
+                }
+            }
+        }
+    }
+}

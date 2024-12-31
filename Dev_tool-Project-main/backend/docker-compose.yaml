@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    container_name: backend
+    ports:
+      - "8084:8000"
+    volumes:
+      - ./backend:/app

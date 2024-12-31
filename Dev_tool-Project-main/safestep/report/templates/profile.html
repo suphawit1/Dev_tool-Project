@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-black">Welcome, {{ customer.user.first_name }} {{ customer.user.last_name }}</h2>
+        <a href="{% url 'edit-profile' user.customer.id %}" class="btn btn-outline-success">
+            <i class="fas fa-edit"></i> Edit Profile
+        </a>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body text-center">
+                    <img src="https://community.st.com/legacyfs/online/avatars/005" class="rounded-circle mb-3" alt="Profile Image">
+                    <h5 class="card-title">{{ customer.user.first_name }} {{ customer.user.last_name }}</h5>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h5 class="card-title text-success">Profile Information</h5>
+                    <p><strong>Name:</strong> {{ customer.user.first_name }} {{ customer.user.last_name }}</p>
+                    <p><strong>Email:</strong> {{ customer.user.email }}</p>
+                    <p><strong>Address:</strong> {{ customer.address }}</p>
+                    <p><strong>Phone:</strong> {{ customer.phone }}</p>
+                </div>
+            </div>
+
+            {% if customer.contacts.all %}
+                <h5 class="card-title text-success">Contact Information</h5>
+                {% for contact in customer.contacts.all %}
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-body">
+                            <p><strong>Name:</strong> {{ contact.first_name }} {{ contact.last_name }}</p>
+                            <p><strong>Email:</strong> {{ contact.email }}</p>
+                            <p><strong>Address:</strong> {{ contact.address }}</p>
+                            <p><strong>Phone:</strong> {{ contact.phone }}</p>
+                            <a href="{% url 'edit-contact' user.id contact.id %}" class="btn btn-outline-success">
+                                <i class="fas fa-edit"></i> Edit Contact
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-muted">No contacts available. You can add one below.</p>
+            {% endif %}
+            <div class="d-flex justify-content-center align-items-center mb-4">
+                <a href="{% url 'add-contact' user.id %}" class="btn btn-outline-success">
+                    <i class="fas fa-plus"></i> Add Contact
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

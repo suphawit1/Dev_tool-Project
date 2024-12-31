@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sensor Data</title>
+    <style>
+        .sensor-data {
+            font-size: 18px;
+        }
+        .ball {
+            width: 50px;
+            height: 50px;
+            background-color: red;
+            border-radius: 50%;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <h1>Device Orientation and Motion</h1>
+
+    <div class="sensor-data">
+        <p>Prediction: <span class="prediction">N/A</span></p>
+        <p>Alpha: <span class="alpha">N/A</span></p>
+        <p>Beta: <span class="beta">N/A</span></p>
+        <p>Gamma: <span class="gamma">N/A</span></p>
+
+        <p>Acceleration X: <span class="accelerationx">N/A</span></p>
+        <p>Acceleration Y: <span class="accelerationy">N/A</span></p>
+        <p>Acceleration Z: <span class="accelerationz">N/A</span></p>
+        <p>Magnitude: <span class="magnitude">N/A</span></p>
+    </div>
+
+    <div class="ball"></div>
+
+    <script>
+        let socket; // Declare socket at the top
+
+window.onload = () => {
+    initWebSocket();
+
+    if (window.DeviceMotionEvent) {
+        window.addEventListener('devicemotion', handleMotion);
+    } else {
+        console.log("DeviceMotionEvent is not supported.");
+    }
+};
+
+function initWebSocket() {
+    socket = new WebSocket("wss://34.126.72.126:8084/ws");
+
+    socket.onopen = function() {
+        console.log("WebSocket connection established");
+    };
+
+    socket.onmessage = function(event) {
+        console.log("Message from server:", event.data);
+    
+        try {
+            // Extract the sensor data and prediction from the message
+            const [dataPart, predictionPart] = event.data.split(', Prediction: ');
+
+            // Extract the JSON data from the data part
+            const jsonString = dataPart.replace(/^Data: /, ''); // Remove "Data: " prefix
+            const message = JSON.parse(jsonString); // Parse the cleaned string
+
+            // Extract prediction (assuming it's a string or single value)
+            const prediction = predictionPart ? predictionPart.trim() : "N/A";
+
+            // Update sensor data on the webpage
+            console.log("data:",message)
+            document.querySelector('.prediction').textContent = prediction || "N/A"; // Display prediction
+            document.querySelector('.alpha').textContent = message.motion.rotationRateAlphaRad.toFixed(2);
+            document.querySelector('.beta').textContent = message.motion.rotationRateBetaRad.toFixed(2);
+            document.querySelector('.gamma').textContent = message.motion.rotationRateGammaRad.toFixed(2);
+            document.querySelector('.accelerationx').textContent = message.motion.accelerationX.toFixed(2);
+            document.querySelector('.accelerationy').textContent = message.motion.accelerationY.toFixed(2);
+            document.querySelector('.accelerationz').textContent = message.motion.accelerationZ.toFixed(2);
+            document.querySelector('.magnitude').textContent = message.motion.magnitude.toFixed(2);
+        } catch (error) {
+            console.error("Error parsing message: ", error);
+        }
+    };
+
+    socket.onerror = function(error) {
+        console.error("WebSocket error: ", error);
+    };
+
+    socket.onclose = function() {
+        console.log("WebSocket connection closed");
+    };
+}
+
+function sendSensorData(data) {
+    if (socket && socket.readyState === WebSocket.OPEN) {
+        socket.send(JSON.stringify(data));
+    } else {
+        console.error("WebSocket is not open. Unable to send data.");
+    }
+}
+
+// Handle orientation data
+let latestMotion = {};
+
+function calculateMagnitude(accelX, accelY, accelZ) {
+    return Math.sqrt(Math.pow(accelX, 2) + Math.pow(accelY, 2) + Math.pow(accelZ, 2));
+}
+
+function getCurrentTime() {
+    return new Date().getTime() * 1e6; // convert milliseconds to nanoseconds
+}
+
+function handleMotion(event) {
+    latestMotion = {
+        accelerationX: event.acceleration.x,
+        accelerationY: event.acceleration.y,
+        accelerationZ: event.acceleration.z,
+        interval: event.interval,
+        rotationRateAlpha: event.rotationRate.alpha,
+        rotationRateBeta: event.rotationRate.beta,
+        rotationRateGamma: event.rotationRate.gamma
+    };
+
+    // Send combined data periodically, e.g., every 100 ms
+    sendSensorData({
+        type: "sensor_data",
+        motion: {
+            time: getCurrentTime(),
+            accelerationX: event.acceleration.x,
+            accelerationY: event.acceleration.y,
+            accelerationZ: event.acceleration.z,
+            rotationRateAlphaRad: (event.rotationRate.alpha * Math.PI) / 180,
+            rotationRateBetaRad: (event.rotationRate.beta * Math.PI) / 180,
+            rotationRateGammaRad: (event.rotationRate.gamma * Math.PI) / 180,
+            magnitude: calculateMagnitude(event.acceleration.x, event.acceleration.y, event.acceleration.z)
+        }
+    });
+}
+
+function sendSensorData(data) {
+    if (socket && socket.readyState === WebSocket.OPEN) {
+        socket.send(JSON.stringify(data));
+    } else {
+        console.error("WebSocket is not open. Unable to send data.");
+    }
+}
+
+    </script>
+</body>
+</html>

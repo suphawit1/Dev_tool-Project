@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        .search-form {
+            display: flex;
+            align-items: center;
+            width: 300px;
+            position: relative;
+        }
+
+        .search-input {
+            border: none;
+            outline: none;
+            border-radius: 50px;
+            padding: 10px 20px;
+            width: 100%;
+            box-shadow: none;
+        }
+
+        .search-button {
+            background: none;
+            border: none;
+            color: #666;
+            font-size: 1.2em;
+            cursor: pointer;
+            position: absolute;
+            right: 20px;
+        }
+        .search-input::-webkit-search-cancel-button {
+            -webkit-appearance: none;
+            appearance: none;
+        }
+    </style>
+</head>
+    {% if user.is_authenticated %}
+        <div class="navbar navbar-expand-lg navbar-light text-white" style="background-color: #3fbb26;">
+            <div class="container-fluid">
+                <a class="navbar-brand text-white" href="/index/">Index</a>
+                <a class="navbar-brand text-white" href="/sensor/">Sensor</a>
+                <div class="d-flex align-items-center">
+                    <div class="mx-3"> 
+                        <a href="{% url 'profile' user.customer.id %}" >{{ user.username }}</a>
+
+                    </div>
+                    <div class="mx-3">
+                        <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    {%endif%}
+
+</html>
